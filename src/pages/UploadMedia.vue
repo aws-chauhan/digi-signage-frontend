@@ -1,3 +1,4 @@
+// File: src/pages/UploadMedia.vue
 <template>
   <v-container class="mt-8">
     <v-card class="pa-6" elevation="8">
@@ -10,7 +11,25 @@
           show-size
           :rules="[fileSizeRule]"
           required
-        ></v-file-input>
+        />
+
+        <v-text-field v-model="description" label="Description" class="mt-4" />
+
+        <v-autocomplete
+          v-model="selectedTags"
+          v-model:search="tagSearch"
+          :items="tagSuggestions"
+          label="Tags"
+          chips
+          multiple
+          deletable-chips
+          hide-selected
+          clearable
+          :custom-value="true"
+          :menu-props="{ closeOnContentClick: false }"
+          @keydown.enter.stop.prevent="addCustomTag"
+          class="mt-2"
+        />
 
         <v-btn type="submit" color="primary" class="mt-4" :loading="uploading">
           Upload
@@ -21,42 +40,15 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
-import axios from "axios";
-
-const file = ref(null);
-const uploading = ref(false);
-const MAX_SIZE_MB = 10;
-
-const fileSizeRule = (value) => {
-  return !value || value.size <= MAX_SIZE_MB * 1024 * 1024
-    ? true
-    : `File must be under ${MAX_SIZE_MB}MB`;
-};
-
-const handleUpload = async () => {
-  if (!file.value) return alert("Please select a file");
-
-  const user = JSON.parse(localStorage.getItem("user"));
-  if (!user?.id) return alert("Missing user session");
-
-  const formData = new FormData();
-  formData.append("file", file.value);
-  formData.append("userId", user.id);
-
-  try {
-    uploading.value = true;
-    await axios.post(`${import.meta.env.VITE_API_URL}upload`, formData, {
-      withCredentials: true,
-      headers: { "Content-Type": "multipart/form-data" },
-    });
-    alert("Upload successful");
-    file.value = null;
-  } catch (err) {
-    console.error(err);
-    alert("Upload failed");
-  } finally {
-    uploading.value = false;
-  }
-};
+import {
+  file,
+  description,
+  selectedTags,
+  tagSuggestions,
+  tagSearch,
+  uploading,
+  fileSizeRule,
+  handleUpload,
+  addCustomTag,
+} from "../composables/useMediaUpload";
 </script>
