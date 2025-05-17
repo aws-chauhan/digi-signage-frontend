@@ -1,58 +1,20 @@
 <template>
-  <v-card class="pa-4">
-    <h2>Playlists</h2>
+  <DashboardLayout>
+    <v-container
+      class="fill-height d-flex flex-column justify-center align-center text-center"
+    >
+      <v-card elevation="6" class="pa-8" max-width="600">
+        <v-avatar size="64" class="mb-4" color="primary">
+          <v-icon size="36">mdi-account-circle</v-icon>
+        </v-avatar>
 
-    <v-form @submit.prevent="submit">
-      <v-text-field v-model="form.name" label="Name" required></v-text-field>
-      <v-text-field
-        v-model="form.scheduleStart"
-        label="Start (ISO)"
-        required
-      ></v-text-field>
-      <v-text-field
-        v-model="form.scheduleEnd"
-        label="End (ISO)"
-        required
-      ></v-text-field>
-      <v-btn type="submit" color="primary" class="mt-2">Create Playlist</v-btn>
-    </v-form>
-
-    <v-divider class="my-4"></v-divider>
-
-    <v-list v-if="playlists.length">
-      <v-list-item
-        v-for="playlist in playlists"
-        :key="playlist.id"
-        :title="playlist.name"
-        :subtitle="`${playlist.scheduleStart} → ${playlist.scheduleEnd}`"
-      />
-    </v-list>
-
-    <v-alert type="info" v-else>No playlists found.</v-alert>
-  </v-card>
+        <h1 class="text-h4 font-weight-bold mb-2">
+          Welcome, {{ user.firstName }} 👋
+        </h1>
+        <p class="text-body-1 mb-4">
+          "You're in control. Let’s build something awesome!"
+        </p>
+      </v-card>
+    </v-container>
+  </DashboardLayout>
 </template>
-
-<script setup>
-import { reactive, onMounted } from "vue";
-import { usePlaylistStore } from "../store/playlistStore";
-
-const store = usePlaylistStore();
-const playlists = store.playlists;
-const form = reactive({
-  name: "",
-  scheduleStart: "",
-  scheduleEnd: "",
-  items: [], // Will be updated later
-});
-
-const submit = async () => {
-  await store.addPlaylist(form);
-  form.name = "";
-  form.scheduleStart = "";
-  form.scheduleEnd = "";
-};
-
-onMounted(() => {
-  store.fetchPlaylists();
-});
-</script>

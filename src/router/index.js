@@ -7,7 +7,7 @@ import UploadMedia from "../pages/UploadMedia.vue";
 const routes = [
   { path: "/", component: LoginPage },
   { path: "/dashboard", component: AdminDashboard },
-  { path: "/media", component: MediaPage },
+  { path: "/medialib", component: MediaPage },
   { path: "/upload", component: UploadMedia },
 ];
 
