@@ -1,8 +1,16 @@
-import { ref, onMounted } from "vue";
+import { ref, onMounted, computed } from "vue";
 import axios from "axios";
 
 export function useMediaLibrary() {
   const mediaList = ref([]);
+  const searchTerm = ref("");
+
+  const filteredMedia = computed(() => {
+    const term = searchTerm.value.toLowerCase().trim();
+    return mediaList.value.filter((item) =>
+      item.filename.toLowerCase().includes(term)
+    );
+  });
 
   onMounted(async () => {
     try {
@@ -17,5 +25,7 @@ export function useMediaLibrary() {
 
   return {
     mediaList,
+    searchTerm,
+    filteredMedia,
   };
 }

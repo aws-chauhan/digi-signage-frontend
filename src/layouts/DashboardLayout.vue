@@ -1,7 +1,6 @@
-<!-- File: src/layouts/DashboardLayout.vue -->
 <template>
   <v-app>
-    <!-- ✅ Navigation Drawer -->
+    <!-- Navigation Drawer -->
     <v-navigation-drawer
       v-model="drawer"
       :permanent="!isMobile"
@@ -9,37 +8,42 @@
       app
       width="240"
     >
-      <v-list>
+      <v-list nav dense class="pt-4">
+        <!-- Title -->
         <v-list-item>
-          <v-list-item-title class="text-h6">CMS</v-list-item-title>
+          <v-list-item-title class="text-h6 font-weight-bold text-primary">
+            CMS Dashboard
+          </v-list-item-title>
         </v-list-item>
-        <v-divider></v-divider>
+        <v-divider class="my-2" />
 
+        <!-- Navigation Links -->
         <v-list-item
           v-for="item in navItems"
           :key="item.label"
           :to="item.path"
           link
           exact
+          class="rounded-lg my-1"
+          active-class="bg-grey-lighten-3"
         >
-          <v-list-item-title>{{ item.label }}</v-list-item-title>
+          <v-list-item-title class="text-body-1">{{
+            item.label
+          }}</v-list-item-title>
         </v-list-item>
 
-        <v-divider class="my-2"></v-divider>
+        <v-divider class="my-4" />
 
-        <v-list-item @click="handleLogout">
-          <v-list-item-title class="text-error">Logout</v-list-item-title>
+        <!-- Logout -->
+        <v-list-item @click="handleLogout" class="rounded-lg">
+          <v-list-item-title class="text-body-1 text-error font-weight-medium">
+            Logout
+          </v-list-item-title>
         </v-list-item>
       </v-list>
     </v-navigation-drawer>
 
-    <!-- ✅ App Bar -->
-    <v-app-bar app flat>
-      <v-app-bar-nav-icon @click="toggleDrawer" />
-      <v-toolbar-title>CMS Dashboard</v-toolbar-title>
-    </v-app-bar>
-
-    <!-- ✅ Main Content -->
+    <!-- Main Content -->
     <v-main>
       <v-container fluid class="pa-6">
         <slot />
@@ -63,16 +67,12 @@ onMounted(() => {
   isMobile.value = mobile.value;
 });
 
-const toggleDrawer = () => {
-  drawer.value = !drawer.value;
-};
-
 const navItems = [
   { label: "Dashboard", path: "/dashboard" },
   { label: "Upload Media", path: "/upload" },
   { label: "Manage Playlists", path: "/playlists" },
   { label: "Media Library", path: "/medialib" },
-  { label: "Manage Terminal", path: "/medialib" },
+  { label: "Manage Terminal", path: "/terminal" }, // fixed duplicate path
 ];
 
 const handleLogout = () => {
@@ -80,3 +80,9 @@ const handleLogout = () => {
   router.push("/");
 };
 </script>
+
+<style scoped>
+.v-list-item--active {
+  font-weight: 500;
+}
+</style>
