@@ -32,23 +32,11 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from "vue";
-import axios from "axios";
+import { useMediaLibrary } from "../composables/useMediaLibrary.js";
 import MediaCard from "../components/MediaCard.vue";
 import DashboardLayout from "../layouts/DashboardLayout.vue";
 
-const mediaList = ref([]);
-
-onMounted(async () => {
-  try {
-    const res = await axios.get(`${import.meta.env.VITE_API_URL}media/all`, {
-      withCredentials: true,
-    });
-    mediaList.value = res.data.media;
-  } catch (err) {
-    console.error("❌ Failed to fetch media:", err);
-  }
-});
+const { mediaList } = useMediaLibrary();
 </script>
 
 <style scoped>

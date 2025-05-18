@@ -13,7 +13,9 @@
 </template>
 
 <script setup>
-defineProps({
+const props = defineProps({
   media: Object,
 });
+
+console.log("Image URL:", props.media.fileUrl); // DEBUG
 </script>

@@ -1,4 +1,3 @@
-<!-- src/pages/Login.vue -->
 <template>
   <v-container fluid class="fill-height d-flex align-center justify-center">
     <v-row>
@@ -40,40 +39,7 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
-import { useRouter } from "vue-router";
-import axios from "axios";
-axios.defaults.withCredentials = true;
+import { useLogin } from "../composables/useLogin.js";
 
-const username = ref("");
-const password = ref("");
-const loading = ref(false);
-const router = useRouter();
-
-const handleLogin = async () => {
-  loading.value = true;
-
-  try {
-    const response = await axios.post(
-      `${import.meta.env.VITE_API_URL}login`,
-      {
-        username: username.value,
-        password: password.value,
-      },
-      {
-        withCredentials: true,
-      }
-    );
-
-    const { user } = response.data;
-    localStorage.setItem("user", JSON.stringify(user));
-
-    router.push("/dashboard");
-  } catch (err) {
-    alert("Invalid credentials or server error");
-    console.error(err);
-  } finally {
-    loading.value = false;
-  }
-};
+const { username, password, loading, handleLogin } = useLogin();
 </script>

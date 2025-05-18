@@ -72,6 +72,7 @@ const navItems = [
   { label: "Upload Media", path: "/upload" },
   { label: "Manage Playlists", path: "/playlists" },
   { label: "Media Library", path: "/medialib" },
+  { label: "Manage Terminal", path: "/medialib" },
 ];
 
 const handleLogout = () => {
